@@ -57,6 +57,9 @@ class GhostLastId:
 
     def _get_last_id(self, tag, max_retries=5):
         retries = 0
+        # check if jwt is expired
+        if int(date.now().timestamp()) > self.token['exp']:
+            self.token = self.generate_token()
 
         while retries < max_retries:
             try:
