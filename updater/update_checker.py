@@ -6,12 +6,16 @@ from webdriver_manager.chrome import ChromeDriverManager
 from lastpost import SourceLastID, GhostLastId
 from datetime import datetime as date
 from fetch import FetchUntil
-import schedule
 import time
+import random
+
+# make it look like human
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
 
 options = Options()
 options.add_argument("--headless")
 options.add_argument("--blink-settings=imagesEnabled=false")
+options.add_argument(f'user-agent={user_agent}')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
@@ -67,12 +71,13 @@ def check_update():
         no_update.append('종묘')
 
     if len(no_update) != 0:
-        print(f'No update on: {", ".join(no_update)}')
+        print(f'[{date.now().strftime("%m/%d %H:%M:%S")}] No update on: {", ".join(no_update)}')
 
 
 if __name__ == '__main__':
     check_update()
-    schedule.every(1).minute.do(check_update)
     while True:
-        schedule.run_pending()
-        time.sleep(1)
+        random_time = random.randint(60, 120) # to make it look like human
+        print(f'[{date.now().strftime("%m/%d %H:%M:%S")}] Waiting for {random_time} seconds')
+        time.sleep(random_time)
+        check_update()
