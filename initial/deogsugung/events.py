@@ -1,6 +1,4 @@
-import time
-import concurrent.futures
-from post import GhostPost
+from updater.post import GhostPost
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
