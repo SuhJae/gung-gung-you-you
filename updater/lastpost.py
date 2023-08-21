@@ -14,7 +14,7 @@ from datetime import datetime as date
 class GhostLastId:
     def __init__(self, key):
         self.adminId, self.secret = key.split(":")
-        self.token = self.generate_token()
+        self.token, self.token_exp = self.generate_token()
         self.base_url = "https://gung.joseon.space/ghost/api/admin/posts/"
 
     def generate_token(self):
@@ -22,10 +22,10 @@ class GhostLastId:
         header = {"alg": "HS256", "typ": "JWT", "kid": self.adminId}
         payload = {
             "iat": iat,
-            "exp": iat + 5 * 60,
+            "exp": iat + 60 * 5, # 5 minutes expiration
             "aud": "/admin/"
         }
-        return jwt.encode(payload, bytes.fromhex(self.secret), algorithm="HS256", headers=header)
+        return jwt.encode(payload, bytes.fromhex(self.secret), algorithm="HS256", headers=header), payload['exp']
 
     def gyeongbokgung(self):
         tag = "gyeongbokgung"
@@ -57,12 +57,11 @@ class GhostLastId:
 
     def _get_last_id(self, tag, max_retries=5):
         retries = 0
-        # check if jwt is expired
-        if int(date.now().timestamp()) > self.token['exp']:
-            self.token = self.generate_token()
-
         while retries < max_retries:
             try:
+                if date.now().timestamp() > self.token_exp:
+                    print("Token expired. Generating new token...")
+                    self.token, self.token_exp = self.generate_token()
                 url = f"{self.base_url}?filter=tag:{tag}&limit=1&order=updated_at%20desc"
                 headers = {"Authorization": f"Ghost {self.token}"}
                 response = requests.get(url, headers=headers)
@@ -147,24 +146,27 @@ if __name__ == "__main__":
     key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
     ghost_last_id = GhostLastId(key)
     source_last_id = SourceLastID()
+    while True:
 
-    print("Ghost Last ID".center(30, "="))
-    print(f'gyeongbokgung: {ghost_last_id.gyeongbokgung()}')
-    print(f'changdeokgung: {ghost_last_id.changdeokgung()}')
-    print(f'changgyeonggung: {ghost_last_id.changgyeonggung()}')
-    print(f'deoksugung-notice: {ghost_last_id.deoksugung_notice()}')
-    print(f'deoksugung-career: {ghost_last_id.deoksugung_career()}')
-    print(f'deoksugung-event: {ghost_last_id.deoksugung_event()}')
-    print(f'jongmyo: {ghost_last_id.jongmyo()}')
-    print("="*30 + "\n")
+        print("Ghost Last ID".center(30, "="))
+        print(f'gyeongbokgung: {ghost_last_id.gyeongbokgung()}')
+        print(f'changdeokgung: {ghost_last_id.changdeokgung()}')
+        print(f'changgyeonggung: {ghost_last_id.changgyeonggung()}')
+        print(f'deoksugung-notice: {ghost_last_id.deoksugung_notice()}')
+        print(f'deoksugung-career: {ghost_last_id.deoksugung_career()}')
+        print(f'deoksugung-event: {ghost_last_id.deoksugung_event()}')
+        print(f'jongmyo: {ghost_last_id.jongmyo()}')
+        print("="*30 + "\n")
 
-    print("Source Last ID".center(30, "="))
-    print(f'gyeongbokgung: {source_last_id.gyeongbokgung()}')
-    print(f'changdeokgung: {source_last_id.changdeokgung()}')
-    print(f'changgyeonggung: {source_last_id.changgyeonggung()}')
-    print(f'deoksugung-notice: {source_last_id.deoksugung_notice()}')
-    print(f'deoksugung-career: {source_last_id.deoksugung_career()}')
-    print(f'deoksugung-event: {source_last_id.deoksugung_event()}')
-    print(f'jongmyo: {source_last_id.jongmyo()}')
-    print("="*30 + "\n")
+        # print("Source Last ID".center(30, "="))
+        # print(f'gyeongbokgung: {source_last_id.gyeongbokgung()}')
+        # print(f'changdeokgung: {source_last_id.changdeokgung()}')
+        # print(f'changgyeonggung: {source_last_id.changgyeonggung()}')
+        # print(f'deoksugung-notice: {source_last_id.deoksugung_notice()}')
+        # print(f'deoksugung-career: {source_last_id.deoksugung_career()}')
+        # print(f'deoksugung-event: {source_last_id.deoksugung_event()}')
+        # print(f'jongmyo: {source_last_id.jongmyo()}')
+        # print("="*30 + "\n")
+
+        time.sleep(30)
 
