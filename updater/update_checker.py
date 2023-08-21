@@ -51,33 +51,50 @@ def sync(ghost, source, name):
     return True
 
 
-def check_update():
-    print(f'[{date.now().strftime("%m/%d %H:%M:%S")}] Checking update')
+import time
+from datetime import datetime
+
+def check_update(max_retries = 5):
+    print(f'[{datetime.now().strftime("%m/%d %H:%M:%S")}] Checking update')
     no_update = []
 
-    if not sync(ghost_last_id.gyeongbokgung(), source_last_id.gyeongbokgung(), '경복궁'):
+    def sync_with_retry(sync_func, ghost_func, source_func, name):
+        retries = 0
+        while retries < max_retries:
+            try:
+                if sync_func(ghost_func(), source_func(), name):
+                    return True
+                else:
+                    return False
+            except Exception as e:
+                print(f"An error occurred during sync for {name}: {e}.\nRetrying... ({retries + 1}/{max_retries})")
+                retries += 1
+                time.sleep(1)  # Wait for a moment before retrying
+        return False
+
+    if not sync_with_retry(sync, ghost_last_id.gyeongbokgung, source_last_id.gyeongbokgung, '경복궁'):
         no_update.append('경복궁')
-    if not sync(ghost_last_id.changdeokgung(), source_last_id.changdeokgung(), '창덕궁'):
+    if not sync_with_retry(sync, ghost_last_id.changdeokgung, source_last_id.changdeokgung, '창덕궁'):
         no_update.append('창덕궁')
-    if not sync(ghost_last_id.changgyeonggung(), source_last_id.changgyeonggung(), '창경궁'):
+    if not sync_with_retry(sync, ghost_last_id.changgyeonggung, source_last_id.changgyeonggung, '창경궁'):
         no_update.append('창경궁')
-    if not sync(ghost_last_id.deoksugung_notice(), source_last_id.deoksugung_notice(), '덕수궁-공지'):
+    if not sync_with_retry(sync, ghost_last_id.deoksugung_notice, source_last_id.deoksugung_notice, '덕수궁-공지'):
         no_update.append('덕수궁-공지')
-    if not sync(ghost_last_id.deoksugung_career(), source_last_id.deoksugung_career(), '덕수궁-채용'):
+    if not sync_with_retry(sync, ghost_last_id.deoksugung_career, source_last_id.deoksugung_career, '덕수궁-채용'):
         no_update.append('덕수궁-채용')
-    if not sync(ghost_last_id.deoksugung_event(), source_last_id.deoksugung_event(), '덕수궁-행사'):
+    if not sync_with_retry(sync, ghost_last_id.deoksugung_event, source_last_id.deoksugung_event, '덕수궁-행사'):
         no_update.append('덕수궁-행사')
-    if not sync(ghost_last_id.jongmyo(), source_last_id.jongmyo(), '종묘'):
+    if not sync_with_retry(sync, ghost_last_id.jongmyo, source_last_id.jongmyo, '종묘'):
         no_update.append('종묘')
 
     if len(no_update) != 0:
-        print(f'[{date.now().strftime("%m/%d %H:%M:%S")}] No update on: {", ".join(no_update)}')
+        print(f'[{datetime.now().strftime("%m/%d %H:%M:%S")}] No update on: {", ".join(no_update)}')
 
 
 if __name__ == '__main__':
-    check_update()
+    check_update(1)
     while True:
         random_time = random.randint(60, 120) # to make it look like human
         print(f'[{date.now().strftime("%m/%d %H:%M:%S")}] Waiting for {random_time} seconds')
         time.sleep(random_time)
-        check_update()
+        check_update(5)

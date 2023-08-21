@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
 import jwt
+import time
 import json
 import requests
 from datetime import datetime as date
@@ -54,12 +55,24 @@ class GhostLastId:
         tag = "jongmyo"
         return self._get_last_id(tag)
 
-    def _get_last_id(self, tag):
-        url = f"{self.base_url}?filter=tag:{tag}&limit=1&order=updated_at%20desc"
-        headers = {"Authorization": f"Ghost {self.token}"}
-        response = requests.get(url, headers=headers)
-        data = json.loads(response.text)
-        return int(data['posts'][0]['slug'].split('-')[1])
+    def _get_last_id(self, tag, max_retries=5):
+        retries = 0
+
+        while retries < max_retries:
+            try:
+                url = f"{self.base_url}?filter=tag:{tag}&limit=1&order=updated_at%20desc"
+                headers = {"Authorization": f"Ghost {self.token}"}
+                response = requests.get(url, headers=headers)
+                response.raise_for_status()  # Raise an exception for bad responses
+
+                data = json.loads(response.text)
+                return int(data['posts'][0]['slug'].split('-')[1])
+            except (requests.RequestException, json.JSONDecodeError) as e:
+                print(f"An error occurred during fetcing last article of {tag}: {e}.\nRetrying... ({retries + 1}/{max_retries})")
+                retries += 1
+                time.sleep(1)
+
+        raise Exception(f"Failed after {max_retries} retries")
 
 
 class SourceLastID:
