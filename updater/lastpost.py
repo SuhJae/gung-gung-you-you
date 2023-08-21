@@ -63,7 +63,6 @@ class GhostLastId:
         data = json.loads(response.text)
         return int(data['posts'][0]['slug'].split('-')[1])
 
-
 class SourceLastID:
     def __init__(self):
         options = Options()
