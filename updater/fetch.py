@@ -10,13 +10,16 @@ from post import GhostPost
 
 
 class FetchUntil:
-    def __init__(self, admin_api_key):
+    def __init__(self, admin_api_key, driver=None):
         self.admin_api_key = admin_api_key
         self.ghost_post = GhostPost(admin_api_key)
-        options = Options()
-        options.add_argument("--headless")
-        options.add_argument("--blink-settings=imagesEnabled=false")
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        if driver is None:
+            options = Options()
+            options.add_argument("--headless")
+            options.add_argument("--blink-settings=imagesEnabled=false")
+            self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        else:
+            self.driver = driver
 
     def gyeongbokgung(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[2]/div[2]/div[2]/div[2]/form/div/table/tbody"
@@ -63,7 +66,7 @@ class FetchUntil:
                                                            slug="GBG-" + str(article_id), string_time=date,
                                                            is_time_now=False, filename=filename, file_url=link,
                                                            file_size=size)
-                    print(f'Response: {response.status_code}')
+                    print(f'Ghost response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -110,7 +113,7 @@ class FetchUntil:
                                                            slug="GBG-" + str(article_id), string_time=date,
                                                            is_time_now=False, filename=filename, file_url=link,
                                                            file_size=size)
-                    print(f'Response: {response.status_code}')
+                    print(f'Ghost response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -159,7 +162,7 @@ class FetchUntil:
                                                            slug="CGG-" + str(article_id), string_time=date,
                                                            is_time_now=False, filename=filename, file_url=link,
                                                            file_size=size)
-                    print(f'Response: {response.status_code}')
+                    print(f'Ghost response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -209,7 +212,7 @@ class FetchUntil:
                                                            tags=["덕수궁", "덕수궁 공지"], slug="DSUN-" + str(article_id),
                                                            string_time=date, is_time_now=False, filename=filename,
                                                            file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    print(f'Ghost response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -259,7 +262,7 @@ class FetchUntil:
                                                            tags=["덕수궁", "덕수궁 채용"], slug="DSUN-" + str(article_id),
                                                            string_time=date, is_time_now=False, filename=filename,
                                                            file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    print(f'Ghost response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -310,12 +313,12 @@ class FetchUntil:
                                                            tags=["덕수궁", "덕수궁 행사"], slug="DSUN-" + str(article_id),
                                                            string_time=date, is_time_now=False, filename=filename,
                                                            file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    print(f'Ghost response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
 
-    def jongmyo_event(self, until_id, post_to_ghost=True):
+    def jongmyo(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[2]/div[3]/div[2]/div[2]/div/div[2]/table/tbody/"
         article_xpath = "/html/body/div[2]/div[3]/div[2]/div[2]/div/div[2]/form/div[1]/div[1]/div"
         attachment_xpath = "/html/body/div[2]/div[3]/div[2]/div[2]/div/div[2]/form/div[1]/div[1]/dl[6]/dd/ul/li/a"
@@ -359,7 +362,7 @@ class FetchUntil:
                                                            slug="CGG-" + str(article_id), string_time=date,
                                                            is_time_now=False, filename=filename, file_url=link,
                                                            file_size=size)
-                    print(f'Response: {response.status_code}')
+                    print(f'Ghost response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -378,4 +381,4 @@ if __name__ == '__main__':
     fetch_until.deoksugung_notice(until_id=until, post_to_ghost=False)
     fetch_until.deoksugung_career(until_id=until, post_to_ghost=False)
     fetch_until.deoksugung_event(until_id=until, post_to_ghost=False)
-    fetch_until.jongmyo_event(until_id=until, post_to_ghost=False)
+    fetch_until.jongmyo(until_id=until, post_to_ghost=False)
