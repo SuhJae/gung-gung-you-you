@@ -3,6 +3,7 @@ import json
 import requests
 from datetime import datetime as date
 
+
 class LastId:
     def __init__(self, key):
         self.adminId, self.secret = key.split(":")
@@ -53,6 +54,7 @@ class LastId:
         response = requests.get(url, headers=headers)
         data = json.loads(response.text)
         return int(data['posts'][0]['slug'].split('-')[1])
+
 
 # Example usage:
 if __name__ == "__main__":

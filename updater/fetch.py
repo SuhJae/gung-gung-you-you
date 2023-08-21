@@ -6,7 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from lastpost import LastPostFetcher
 from post import GhostPost
 
 
@@ -14,7 +13,6 @@ class FetchUntil:
     def __init__(self, admin_api_key):
         self.admin_api_key = admin_api_key
         self.ghost_post = GhostPost(admin_api_key)
-        self.post_fetcher = LastPostFetcher(admin_api_key)
         self.driver = self.setup_driver()
 
     def setup_driver(self):
@@ -41,37 +39,35 @@ class FetchUntil:
                 if not article_id.isnumeric():
                     number_of_rows -= 1
                     continue
-                else:
-                    article_id = int(article_id)
-                    if article_id <= until_id:
-                        return
 
-                    title = self.driver.find_element(By.XPATH, row_path + "/td[1]/a").text
-                    url = self.driver.find_element(By.XPATH, row_path + "/td[1]/a")
-                    date = self.driver.find_element(By.XPATH, row_path + "/td[3]").text
+                article_id = int(article_id)
+                if article_id <= until_id:
+                    return
 
-                    print(f"Fetching #{article_id}: {title}")
+                title = self.driver.find_element(By.XPATH, row_path + "/td[1]/a").text
+                url = self.driver.find_element(By.XPATH, row_path + "/td[1]/a")
+                date = self.driver.find_element(By.XPATH, row_path + "/td[3]").text
 
-                    url.click()
-                    url = self.driver.current_url
-                    WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
-                    content = self.driver.find_element(By.XPATH, article_xpath).text
-                    filename, size, link = None, None, None
-                    if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
-                        link = self.driver.find_element(By.XPATH, attachment_xpath).get_attribute("href")
-                        filename = self.driver.find_element(By.XPATH, attachment_xpath).text
-                        size = self.driver.execute_script(
-                            "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
-                            link)
-                    self.driver.back()
-                    if post_to_ghost:
-                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                               tags=["경복궁"],
-                                                               slug="GBG-" + str(article_id), string_time=date,
-                                                               is_time_now=False,
-                                                               filename=filename,
-                                                               file_url=link, file_size=size)
-                        print(f'Response: {response.status_code}')
+                print(f"Fetching #{article_id}: {title}")
+
+                url.click()
+                url = self.driver.current_url
+                WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
+                content = self.driver.find_element(By.XPATH, article_xpath).text
+                filename, size, link = None, None, None
+                if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
+                    link = self.driver.find_element(By.XPATH, attachment_xpath).get_attribute("href")
+                    filename = self.driver.find_element(By.XPATH, attachment_xpath).text
+                    size = self.driver.execute_script(
+                        "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
+                        link)
+                self.driver.back()
+                if post_to_ghost:
+                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["경복궁"],
+                                                           slug="GBG-" + str(article_id), string_time=date,
+                                                           is_time_now=False, filename=filename, file_url=link,
+                                                           file_size=size)
+                    print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -94,34 +90,31 @@ class FetchUntil:
                 if not article_id.isnumeric():
                     number_of_rows -= 1
                     continue
-                else:
-                    article_id = int(article_id)
-                    if article_id <= until_id:
-                        return
-                    title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
-                    url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
-                    date = self.driver.find_element(By.XPATH, row_path + "/td[4]").text
+                article_id = int(article_id)
+                if article_id <= until_id:
+                    return
+                title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
+                url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
+                date = self.driver.find_element(By.XPATH, row_path + "/td[4]").text
 
-                    print(f"Fetching #{article_id}: {title}")
+                print(f"Fetching #{article_id}: {title}")
 
-                    url.click()
-                    url = self.driver.current_url
-                    WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
-                    content = self.driver.find_element(By.XPATH, article_xpath).text
-                    filename, size, link = None, None, None
-                    if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
-                        link = url
-                        filename = self.driver.find_element(By.XPATH, attachment_xpath).text
-                        size = 0
-                    self.driver.back()
-                    if post_to_ghost:
-                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                               tags=["창덕궁"],
-                                                               slug="GBG-" + str(article_id), string_time=date,
-                                                               is_time_now=False,
-                                                               filename=filename,
-                                                               file_url=link, file_size=size)
-                        print(f'Response: {response.status_code}')
+                url.click()
+                url = self.driver.current_url
+                WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
+                content = self.driver.find_element(By.XPATH, article_xpath).text
+                filename, size, link = None, None, None
+                if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
+                    link = url
+                    filename = self.driver.find_element(By.XPATH, attachment_xpath).text
+                    size = 0
+                self.driver.back()
+                if post_to_ghost:
+                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["창덕궁"],
+                                                           slug="GBG-" + str(article_id), string_time=date,
+                                                           is_time_now=False, filename=filename, file_url=link,
+                                                           file_size=size)
+                    print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -145,35 +138,32 @@ class FetchUntil:
                 if not article_id.isnumeric():
                     number_of_rows -= 1
                     continue
-                else:
-                    article_id = int(article_id)
-                    if article_id <= until_id:
-                        return
+                article_id = int(article_id)
+                if article_id <= until_id:
+                    return
 
-                    title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
-                    url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
-                    date = self.driver.find_element(By.XPATH, row_path + "/td[5]").text
+                title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
+                url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
+                date = self.driver.find_element(By.XPATH, row_path + "/td[5]").text
 
-                    print(f"Fetching #{article_id}: {title}")
+                print(f"Fetching #{article_id}: {title}")
 
-                    url.click()
-                    url = self.driver.current_url
-                    WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
-                    content = self.driver.find_element(By.XPATH, article_xpath).text
-                    filename, size, link = None, None, None
-                    if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
-                        s = self.driver.find_element(By.XPATH, attachment_xpath).text
-                        filename = s.split(" [")[0]
-                        size = s.split(" [")[1].split(" byte]")[0]
-                    self.driver.back()
-                    if post_to_ghost:
-                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                               tags=["창경궁"],
-                                                               slug="CGG-" + str(article_id), string_time=date,
-                                                               is_time_now=False,
-                                                               filename=filename,
-                                                               file_url=link, file_size=size)
-                        print(f'Response: {response.status_code}')
+                url.click()
+                url = self.driver.current_url
+                WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
+                content = self.driver.find_element(By.XPATH, article_xpath).text
+                filename, size, link = None, None, None
+                if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
+                    s = self.driver.find_element(By.XPATH, attachment_xpath).text
+                    filename = s.split(" [")[0]
+                    size = s.split(" [")[1].split(" byte]")[0]
+                self.driver.back()
+                if post_to_ghost:
+                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["창경궁"],
+                                                           slug="CGG-" + str(article_id), string_time=date,
+                                                           is_time_now=False, filename=filename, file_url=link,
+                                                           file_size=size)
+                    print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -196,37 +186,34 @@ class FetchUntil:
                 if not article_id.isnumeric():
                     number_of_rows -= 1
                     continue
-                else:
-                    article_id = int(article_id)
-                    if article_id <= until_id:
-                        return
+                article_id = int(article_id)
+                if article_id <= until_id:
+                    return
 
-                    title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
-                    url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
-                    date = self.driver.find_element(By.XPATH, row_path + "/td[3]").text
+                title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
+                url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
+                date = self.driver.find_element(By.XPATH, row_path + "/td[3]").text
 
-                    print(f"Fetching #{article_id}: {title}")
+                print(f"Fetching #{article_id}: {title}")
 
-                    url.click()
-                    url = self.driver.current_url
-                    WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
-                    content = self.driver.find_element(By.XPATH, article_xpath).text
-                    filename, link, size = None, None, None
-                    if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
-                        link = self.driver.find_element(By.XPATH, attachment_xpath).get_attribute("href")
-                        filename = self.driver.find_element(By.XPATH, attachment_xpath).text
-                        size = self.driver.execute_script(
-                            "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
-                            link)
-                    self.driver.back()
-                    if post_to_ghost:
-                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                               tags=["덕수궁", "덕수궁 공지"],
-                                                               slug="DSUN-" + str(article_id), string_time=date,
-                                                               is_time_now=False,
-                                                               filename=filename,
-                                                               file_url=link, file_size=size)
-                        print(f'Response: {response.status_code}')
+                url.click()
+                url = self.driver.current_url
+                WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
+                content = self.driver.find_element(By.XPATH, article_xpath).text
+                filename, link, size = None, None, None
+                if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
+                    link = self.driver.find_element(By.XPATH, attachment_xpath).get_attribute("href")
+                    filename = self.driver.find_element(By.XPATH, attachment_xpath).text
+                    size = self.driver.execute_script(
+                        "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
+                        link)
+                self.driver.back()
+                if post_to_ghost:
+                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                           tags=["덕수궁", "덕수궁 공지"], slug="DSUN-" + str(article_id),
+                                                           string_time=date, is_time_now=False, filename=filename,
+                                                           file_url=link, file_size=size)
+                    print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -249,37 +236,34 @@ class FetchUntil:
                 if not article_id.isnumeric():
                     number_of_rows -= 1
                     continue
-                else:
-                    article_id = int(article_id)
-                    if article_id <= until_id:
-                        return
+                article_id = int(article_id)
+                if article_id <= until_id:
+                    return
 
-                    title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
-                    url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
-                    date = self.driver.find_element(By.XPATH, row_path + "/td[3]").text
+                title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
+                url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
+                date = self.driver.find_element(By.XPATH, row_path + "/td[3]").text
 
-                    print(f"Fetching #{article_id}: {title}")
+                print(f"Fetching #{article_id}: {title}")
 
-                    url.click()
-                    url = self.driver.current_url
-                    WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
-                    content = self.driver.find_element(By.XPATH, article_xpath).text
-                    filename, link, size = None, None, None
-                    if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
-                        link = self.driver.find_element(By.XPATH, attachment_xpath).get_attribute("href")
-                        filename = self.driver.find_element(By.XPATH, attachment_xpath).text
-                        size = self.driver.execute_script(
-                            "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
-                            link)
-                    self.driver.back()
-                    if post_to_ghost:
-                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                               tags=["덕수궁", "덕수궁 채용"],
-                                                               slug="DSUN-" + str(article_id), string_time=date,
-                                                               is_time_now=False,
-                                                               filename=filename,
-                                                               file_url=link, file_size=size)
-                        print(f'Response: {response.status_code}')
+                url.click()
+                url = self.driver.current_url
+                WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
+                content = self.driver.find_element(By.XPATH, article_xpath).text
+                filename, link, size = None, None, None
+                if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
+                    link = self.driver.find_element(By.XPATH, attachment_xpath).get_attribute("href")
+                    filename = self.driver.find_element(By.XPATH, attachment_xpath).text
+                    size = self.driver.execute_script(
+                        "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
+                        link)
+                self.driver.back()
+                if post_to_ghost:
+                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                           tags=["덕수궁", "덕수궁 채용"], slug="DSUN-" + str(article_id),
+                                                           string_time=date, is_time_now=False, filename=filename,
+                                                           file_url=link, file_size=size)
+                    print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -302,37 +286,35 @@ class FetchUntil:
                 if not article_id.isnumeric():
                     number_of_rows -= 1
                     continue
-                else:
-                    article_id = int(article_id)
-                    if article_id <= until_id:
-                        return
 
-                    title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
-                    url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
-                    date = self.driver.find_element(By.XPATH, row_path + "/td[3]").text
+                article_id = int(article_id)
+                if article_id <= until_id:
+                    return
 
-                    print(f"Fetching #{article_id}: {title}")
+                title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
+                url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
+                date = self.driver.find_element(By.XPATH, row_path + "/td[3]").text
 
-                    url.click()
-                    url = self.driver.current_url
-                    WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
-                    content = self.driver.find_element(By.XPATH, article_xpath).text
-                    filename, link, size = None, None, None
-                    if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
-                        link = self.driver.find_element(By.XPATH, attachment_xpath).get_attribute("href")
-                        filename = self.driver.find_element(By.XPATH, attachment_xpath).text
-                        size = self.driver.execute_script(
-                            "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
-                            link)
-                    self.driver.back()
-                    if post_to_ghost:
-                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                               tags=["덕수궁", "덕수궁 행사"],
-                                                               slug="DSUN-" + str(article_id), string_time=date,
-                                                               is_time_now=False,
-                                                               filename=filename,
-                                                               file_url=link, file_size=size)
-                        print(f'Response: {response.status_code}')
+                print(f"Fetching #{article_id}: {title}")
+
+                url.click()
+                url = self.driver.current_url
+                WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
+                content = self.driver.find_element(By.XPATH, article_xpath).text
+                filename, link, size = None, None, None
+                if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
+                    link = self.driver.find_element(By.XPATH, attachment_xpath).get_attribute("href")
+                    filename = self.driver.find_element(By.XPATH, attachment_xpath).text
+                    size = self.driver.execute_script(
+                        "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
+                        link)
+                self.driver.back()
+                if post_to_ghost:
+                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                           tags=["덕수궁", "덕수궁 행사"], slug="DSUN-" + str(article_id),
+                                                           string_time=date, is_time_now=False, filename=filename,
+                                                           file_url=link, file_size=size)
+                    print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -356,35 +338,32 @@ class FetchUntil:
                 if not article_id.isnumeric():
                     number_of_rows -= 1
                     continue
-                else:
-                    article_id = int(article_id)
-                    if article_id <= until_id:
-                        return
+                article_id = int(article_id)
+                if article_id <= until_id:
+                    return
 
-                    title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
-                    url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
-                    date = self.driver.find_element(By.XPATH, row_path + "/td[5]").text
+                title = self.driver.find_element(By.XPATH, row_path + "/td[2]/a").text
+                url = self.driver.find_element(By.XPATH, row_path + "/td[2]/a")
+                date = self.driver.find_element(By.XPATH, row_path + "/td[5]").text
 
-                    print(f"Fetching #{article_id}: {title}")
+                print(f"Fetching #{article_id}: {title}")
 
-                    url.click()
-                    url = self.driver.current_url
-                    WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
-                    content = self.driver.find_element(By.XPATH, article_xpath).text
-                    filename, size, link = None, None, None
-                    if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
-                        s = self.driver.find_element(By.XPATH, attachment_xpath).text
-                        filename = s.split(" [")[0]
-                        size = s.split(" [")[1].split(" byte]")[0]
-                    self.driver.back()
-                    if post_to_ghost:
-                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                               tags=["종묘"],
-                                                               slug="CGG-" + str(article_id), string_time=date,
-                                                               is_time_now=False,
-                                                               filename=filename,
-                                                               file_url=link, file_size=size)
-                        print(f'Response: {response.status_code}')
+                url.click()
+                url = self.driver.current_url
+                WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, article_xpath)))
+                content = self.driver.find_element(By.XPATH, article_xpath).text
+                filename, size, link = None, None, None
+                if len(self.driver.find_elements(By.XPATH, attachment_xpath)) > 0:
+                    s = self.driver.find_element(By.XPATH, attachment_xpath).text
+                    filename = s.split(" [")[0]
+                    size = s.split(" [")[1].split(" byte]")[0]
+                self.driver.back()
+                if post_to_ghost:
+                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["종묘"],
+                                                           slug="CGG-" + str(article_id), string_time=date,
+                                                           is_time_now=False, filename=filename, file_url=link,
+                                                           file_size=size)
+                    print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -396,7 +375,7 @@ if __name__ == '__main__':
     fetch_until = FetchUntil(admin_api_key)
 
     # Fetch until the article with id 200 (For testing, post_to_ghost is set to False)
-    until = 200
+    until = 900
     fetch_until.gyeongbokgung(until_id=until, post_to_ghost=False)
     fetch_until.changgyeonggung(until_id=until, post_to_ghost=False)
     fetch_until.changgyeonggung(until_id=until, post_to_ghost=False)
