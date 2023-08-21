@@ -3,7 +3,7 @@ import json
 import requests
 from datetime import datetime as date
 
-class LastPostFetcher:
+class LastId:
     def __init__(self, key):
         self.adminId, self.secret = key.split(":")
         self.token = self.generate_token()
@@ -19,31 +19,31 @@ class LastPostFetcher:
         }
         return jwt.encode(payload, bytes.fromhex(self.secret), algorithm="HS256", headers=header)
 
-    def gyeongbokgung_get_last_id(self):
+    def gyeongbokgung(self):
         tag = "gyeongbokgung"
         return self._get_last_id(tag)
 
-    def changdeokgung_get_last_id(self):
+    def changdeokgung(self):
         tag = "changdeokgung"
         return self._get_last_id(tag)
 
-    def changgyeonggung_get_last_id(self):
+    def changgyeonggung(self):
         tag = "changgyeonggung"
         return self._get_last_id(tag)
 
-    def deoksugung_notice_get_last_id(self):
+    def deoksugung_notice(self):
         tag = "deoksugung-notice"
         return self._get_last_id(tag)
 
-    def deoksugung_career_get_last_id(self):
+    def deoksugung_career(self):
         tag = "deoksugung-career"
         return self._get_last_id(tag)
 
-    def deoksugung_event_get_last_id(self):
+    def deoksugung_event(self):
         tag = "deoksugung-event"
         return self._get_last_id(tag)
 
-    def jongmyo_get_last_id(self):
+    def jongmyo(self):
         tag = "jongmyo"
         return self._get_last_id(tag)
 
@@ -57,13 +57,12 @@ class LastPostFetcher:
 # Example usage:
 if __name__ == "__main__":
     key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
-    post_fetcher = LastPostFetcher(key)
+    last_id = LastId(key)
 
-    print(f'gyeongbokgung: {post_fetcher.gyeongbokgung_get_last_id()}')
-    print(f'changdeokgung: {post_fetcher.changdeokgung_get_last_id()}')
-    print(f'changgyeonggung: {post_fetcher.changgyeonggung_get_last_id()}')
-    print(f'deoksugung-notice: {post_fetcher.deoksugung_notice_get_last_id()}')
-    print(f'deoksugung-career: {post_fetcher.deoksugung_career_get_last_id()}')
-    print(f'deoksugung-event: {post_fetcher.deoksugung_event_get_last_id()}')
-    print(f'jongmyo: {post_fetcher.jongmyo_get_last_id()}')
-
+    print(f'gyeongbokgung: {last_id.gyeongbokgung()}')
+    print(f'changdeokgung: {last_id.changdeokgung()}')
+    print(f'changgyeonggung: {last_id.changgyeonggung()}')
+    print(f'deoksugung-notice: {last_id.deoksugung_notice()}')
+    print(f'deoksugung-career: {last_id.deoksugung_career()}')
+    print(f'deoksugung-event: {last_id.deoksugung_event()}')
+    print(f'jongmyo: {last_id.jongmyo()}')
