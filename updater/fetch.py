@@ -24,7 +24,7 @@ class FetchUntil:
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         return driver
 
-    def gyeongbokgung_fetch_until(self, until_id):
+    def gyeongbokgung(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[2]/div[2]/div[2]/div[2]/form/div/table/tbody"
         article_xpath = "/html/body/div[2]/div[2]/div[2]/div[2]/table/tbody/tr[2]/td"
         attachment_xpath = "/html/body/div[2]/div[2]/div[2]/div[2]/table/tfoot/tr/td/a"
@@ -64,17 +64,19 @@ class FetchUntil:
                             "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
                             link)
                     self.driver.back()
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["경복궁"],
-                                                           slug="GBG-" + str(article_id), string_time=date,
-                                                           is_time_now=False,
-                                                           filename=filename,
-                                                           file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    if post_to_ghost:
+                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                               tags=["경복궁"],
+                                                               slug="GBG-" + str(article_id), string_time=date,
+                                                               is_time_now=False,
+                                                               filename=filename,
+                                                               file_url=link, file_size=size)
+                        print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
 
-    def changdeokgung_fetch_until(self, until_id):
+    def changdeokgung(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[1]/div[4]/b/div/div[2]/center/table/tbody"
         article_xpath = "/html/body/div[1]/div[4]/b/div/div[2]/center/table/tbody/tr[4]/td"
         attachment_xpath = "/html/body/div[1]/div[4]/b/div/div[2]/center/table/tbody/tr[5]/td/table/tbody/tr/td[3]/a"
@@ -112,17 +114,19 @@ class FetchUntil:
                         filename = self.driver.find_element(By.XPATH, attachment_xpath).text
                         size = 0
                     self.driver.back()
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["창덕궁"],
-                                                           slug="GBG-" + str(article_id), string_time=date,
-                                                           is_time_now=False,
-                                                           filename=filename,
-                                                           file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    if post_to_ghost:
+                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                               tags=["창덕궁"],
+                                                               slug="GBG-" + str(article_id), string_time=date,
+                                                               is_time_now=False,
+                                                               filename=filename,
+                                                               file_url=link, file_size=size)
+                        print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
 
-    def changgyeonggung_fetch_until(self, until_id):
+    def changgyeonggung(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[2]/div[6]/div[2]/div[2]/div/div[2]/table/tbody/"
         article_xpath = "/html/body/div[2]/div[6]/div[2]/div[2]/div/div[2]/form/div[1]/div[1]/div"
         attachment_xpath = "/html/body/div[2]/div[6]/div[2]/div[2]/div/div[2]/form/div[1]/div[1]/dl[6]/dd/ul/li[1]/a"
@@ -162,17 +166,19 @@ class FetchUntil:
                         filename = s.split(" [")[0]
                         size = s.split(" [")[1].split(" byte]")[0]
                     self.driver.back()
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["창경궁"],
-                                                           slug="CGG-" + str(article_id), string_time=date,
-                                                           is_time_now=False,
-                                                           filename=filename,
-                                                           file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    if post_to_ghost:
+                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                               tags=["창경궁"],
+                                                               slug="CGG-" + str(article_id), string_time=date,
+                                                               is_time_now=False,
+                                                               filename=filename,
+                                                               file_url=link, file_size=size)
+                        print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
 
-    def deoksugung_notice_fetch_until(self, until_id):
+    def deoksugung_notice(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[2]/table/tbody/"
         article_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[3]/div/div"
         attachment_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[5]/div/a"
@@ -213,18 +219,19 @@ class FetchUntil:
                             "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
                             link)
                     self.driver.back()
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                           tags=["덕수궁", "덕수궁 공지"],
-                                                           slug="DSUN-" + str(article_id), string_time=date,
-                                                           is_time_now=False,
-                                                           filename=filename,
-                                                           file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    if post_to_ghost:
+                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                               tags=["덕수궁", "덕수궁 공지"],
+                                                               slug="DSUN-" + str(article_id), string_time=date,
+                                                               is_time_now=False,
+                                                               filename=filename,
+                                                               file_url=link, file_size=size)
+                        print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
 
-    def deoksugung_career_fetch_until(self, until_id):
+    def deoksugung_career(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[2]/table/tbody/"
         article_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[3]/div/div"
         attachment_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[5]/div/a"
@@ -265,18 +272,19 @@ class FetchUntil:
                             "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
                             link)
                     self.driver.back()
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                           tags=["덕수궁", "덕수궁 채용"],
-                                                           slug="DSUN-" + str(article_id), string_time=date,
-                                                           is_time_now=False,
-                                                           filename=filename,
-                                                           file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    if post_to_ghost:
+                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                               tags=["덕수궁", "덕수궁 채용"],
+                                                               slug="DSUN-" + str(article_id), string_time=date,
+                                                               is_time_now=False,
+                                                               filename=filename,
+                                                               file_url=link, file_size=size)
+                        print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
 
-    def deoksugung_event_fetch_until(self, until_id):
+    def deoksugung_event(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[2]/table/tbody/"
         article_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[3]/div/div"
         attachment_xpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[5]/div/a"
@@ -317,18 +325,19 @@ class FetchUntil:
                             "return fetch(arguments[0], {method: 'HEAD'}).then(response => response.headers.get('content-length'));",
                             link)
                     self.driver.back()
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                           tags=["덕수궁", "덕수궁 행사"],
-                                                           slug="DSUN-" + str(article_id), string_time=date,
-                                                           is_time_now=False,
-                                                           filename=filename,
-                                                           file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    if post_to_ghost:
+                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                               tags=["덕수궁", "덕수궁 행사"],
+                                                               slug="DSUN-" + str(article_id), string_time=date,
+                                                               is_time_now=False,
+                                                               filename=filename,
+                                                               file_url=link, file_size=size)
+                        print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
 
-    def jongmyo_event_fetch_until(self, until_id):
+    def jongmyo_event(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[2]/div[3]/div[2]/div[2]/div/div[2]/table/tbody/"
         article_xpath = "/html/body/div[2]/div[3]/div[2]/div[2]/div/div[2]/form/div[1]/div[1]/div"
         attachment_xpath = "/html/body/div[2]/div[3]/div[2]/div[2]/div/div[2]/form/div[1]/div[1]/dl[6]/dd/ul/li/a"
@@ -368,13 +377,14 @@ class FetchUntil:
                         filename = s.split(" [")[0]
                         size = s.split(" [")[1].split(" byte]")[0]
                     self.driver.back()
-
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["종묘"],
-                                                           slug="CGG-" + str(article_id), string_time=date,
-                                                           is_time_now=False,
-                                                           filename=filename,
-                                                           file_url=link, file_size=size)
-                    print(f'Response: {response.status_code}')
+                    if post_to_ghost:
+                        response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                                                               tags=["종묘"],
+                                                               slug="CGG-" + str(article_id), string_time=date,
+                                                               is_time_now=False,
+                                                               filename=filename,
+                                                               file_url=link, file_size=size)
+                        print(f'Response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -382,17 +392,15 @@ class FetchUntil:
 
 if __name__ == '__main__':
     # Initialize the FetchUntil class with your admin API key
-    admin_api_key = "your_admin_api_key_here"
-    fetcher = FetchUntil(admin_api_key)
+    admin_api_key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
+    fetch_until = FetchUntil(admin_api_key)
 
-    # Define the article ID until which you want to fetch data
-    until_id = 100  # Replace with the desired ID
-
-    # Fetch data from different websites
-    fetcher.gyeongbokgung_fetch_until(until_id)
-    fetcher.changdeokgung_fetch_until(until_id)
-    fetcher.changgyeonggung_fetch_until(until_id)
-    fetcher.deoksugung_notice_fetch_until(until_id)
-    fetcher.deoksugung_career_fetch_until(until_id)
-    fetcher.deoksugung_event_fetch_until(until_id)
-    fetcher.jongmyo_event_fetch_until(until_id)
+    # Fetch until the article with id 200 (For testing, post_to_ghost is set to False)
+    until = 200
+    fetch_until.gyeongbokgung(until_id=until, post_to_ghost=False)
+    fetch_until.changgyeonggung(until_id=until, post_to_ghost=False)
+    fetch_until.changgyeonggung(until_id=until, post_to_ghost=False)
+    fetch_until.deoksugung_notice(until_id=until, post_to_ghost=False)
+    fetch_until.deoksugung_career(until_id=until, post_to_ghost=False)
+    fetch_until.deoksugung_event(until_id=until, post_to_ghost=False)
+    fetch_until.jongmyo_event(until_id=until, post_to_ghost=False)
