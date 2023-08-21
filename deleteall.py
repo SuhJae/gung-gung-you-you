@@ -24,7 +24,7 @@ token = jwt.encode(payload, bytes.fromhex(secret), algorithm="HS256", headers=he
 
 # Make an authenticated request to create a post
 
-delete_tag = "deoksugung"
+delete_tag = "deoksugung-event"
 
 # filter: &filter=visibility:public
 

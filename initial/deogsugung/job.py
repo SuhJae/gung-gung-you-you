@@ -15,8 +15,10 @@ ghost_post = GhostPost(admin_api_key)
 
 
 options = Options()
-options.add_argument("--headless")
+# options.add_argument("--headless")
 # options.add_experimental_option("detach", True)
+# disable images from loading at all
+options.add_argument("--blink-settings=imagesEnabled=false")
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 bordXpath = "/html/body/div[1]/section[2]/div/div/div[2]/div/div[2]/div/div/div/div[2]/table/tbody/"
@@ -72,7 +74,7 @@ while numberOfRows > 0:
         print(f'{articleId} - {date} - {title} - Attachment: {isAttachmentIncluded}')
 
         content, filename, link, fileSize = getarticle(url)
-        response = ghost_post.create_post(button_url=url, content=content, title=title, tags=["덕수궁"],
+        response = ghost_post.create_post(button_url=url, content=content, title=title, tags=["덕수궁", "덕수궁 채용"],
                                           slug="DSUJ-" + articleId, string_time=date, is_time_now=False,
                                           filename=filename,
                                           file_url=link, file_size=fileSize)

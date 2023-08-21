@@ -31,8 +31,16 @@ class LastPostFetcher:
         tag = "changgyeonggung"
         return self._get_last_id(tag)
 
-    def deoksugung_get_last_id(self):
-        tag = "deoksugung"
+    def deoksugung_notice_get_last_id(self):
+        tag = "deoksugung-notice"
+        return self._get_last_id(tag)
+
+    def deoksugung_career_get_last_id(self):
+        tag = "deoksugung-career"
+        return self._get_last_id(tag)
+
+    def deoksugung_event_get_last_id(self):
+        tag = "deoksugung-event"
         return self._get_last_id(tag)
 
     def jongmyo_get_last_id(self):
@@ -51,4 +59,11 @@ if __name__ == "__main__":
     key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
     post_fetcher = LastPostFetcher(key)
 
-    print(post_fetcher.jongmyo_get_last_id())
+    print(f'gyeongbokgung: {post_fetcher.gyeongbokgung_get_last_id()}')
+    print(f'changdeokgung: {post_fetcher.changdeokgung_get_last_id()}')
+    print(f'changgyeonggung: {post_fetcher.changgyeonggung_get_last_id()}')
+    print(f'deoksugung-notice: {post_fetcher.deoksugung_notice_get_last_id()}')
+    print(f'deoksugung-career: {post_fetcher.deoksugung_career_get_last_id()}')
+    print(f'deoksugung-event: {post_fetcher.deoksugung_event_get_last_id()}')
+    print(f'jongmyo: {post_fetcher.jongmyo_get_last_id()}')
+

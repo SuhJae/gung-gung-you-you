@@ -15,8 +15,10 @@ ghost_post = GhostPost(admin_api_key)
 
 
 options = Options()
-options.add_argument("--headless")
+# options.add_argument("--headless")
 # options.add_experimental_option("detach", True)
+# disable images from loading at all
+options.add_argument("--blink-settings=imagesEnabled=false")
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 bordXpath = "/html/body/div[2]/div[3]/div[2]/div[2]/div/div[2]/table/tbody/"
