@@ -13,14 +13,10 @@ class FetchUntil:
     def __init__(self, admin_api_key):
         self.admin_api_key = admin_api_key
         self.ghost_post = GhostPost(admin_api_key)
-        self.driver = self.setup_driver()
-
-    def setup_driver(self):
         options = Options()
         options.add_argument("--headless")
         options.add_argument("--blink-settings=imagesEnabled=false")
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        return driver
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     def gyeongbokgung(self, until_id, post_to_ghost=True):
         bord_xpath = "/html/body/div[2]/div[2]/div[2]/div[2]/form/div/table/tbody"
@@ -371,8 +367,8 @@ class FetchUntil:
 
 if __name__ == '__main__':
     # Initialize the FetchUntil class with your admin API key
-    admin_api_key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
-    fetch_until = FetchUntil(admin_api_key)
+    key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
+    fetch_until = FetchUntil(key)
 
     # Fetch until the article with id 200 (For testing, post_to_ghost is set to False)
     until = 900
