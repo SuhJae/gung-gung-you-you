@@ -15,8 +15,10 @@ ghost_post = GhostPost(admin_api_key)
 
 
 options = Options()
-options.add_argument("--headless")
+# options.add_argument("--headless")
 # options.add_experimental_option("detach", True)
+# disable images from loading at all
+options.add_argument("--blink-settings=imagesEnabled=false")
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 bordXpath = "/html/body/div[2]/div[2]/div[2]/div[2]/form/div/table/tbody"
@@ -69,13 +71,7 @@ for page in range(1, lastPage + 1):
         url = driver.find_element(By.XPATH, rowPath + "/td[1]/a").get_attribute("href")
         date = driver.find_element(By.XPATH, rowPath + "/td[3]").text
 
-        # check if element inside "/td[4]" has img tag
-        if len(driver.find_elements(By.XPATH, rowPath + "/td[4]/img")) > 0:
-            isAttachmentIncluded = True
-        else:
-            isAttachmentIncluded = False
-
-        print(f'{articleId} - {date} - {title} - Attachment: {isAttachmentIncluded}')
+        print(f'{articleId} - {date} - {title}')
 
         content, filename, link, fileSize = getarticle(url)
 

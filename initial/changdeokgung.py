@@ -15,8 +15,10 @@ ghost_post = GhostPost(admin_api_key)
 
 
 options = Options()
-options.add_argument("--headless")
+# options.add_argument("--headless")
 # options.add_experimental_option("detach", True)
+# disable images from loading at all
+options.add_argument("--blink-settings=imagesEnabled=false")
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 bordXpath = "/html/body/div[1]/div[4]/b/div/div[2]/center/table/tbody"
@@ -72,7 +74,6 @@ for page in range(1, lastPage + 1):
         articleId = driver.find_element(By.XPATH, rowPath + "/td[1]").text
 
         title = driver.find_element(By.XPATH, rowPath + "/td[2]/a").text
-
         url = driver.find_element(By.XPATH, rowPath + "/td[2]/a").get_attribute("href")
         date = driver.find_element(By.XPATH, rowPath + "/td[4]").text
 
