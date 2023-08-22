@@ -1,0 +1,4 @@
+requests~=2.31.0
+PyJWT~=2.8.0
+selenium~=4.11.2
+translators~=5.8.2
