@@ -181,7 +181,7 @@ class Migration:
 
 if __name__ == "__main__":
     from_key = "64e46446ea9500431950ab72:890ce30138c23149213a235fe6c6fdbfad92c12ea54f33d30c8bd5c4756e0e34"
-    to_key = "64e358948b573504974e8082:641e78ee77152562b89ac4910f1c0c3f4ab53276165863db004ba525eca0d5fc"
+    to_key = "64e481321ccb164eaf726ba1:00f732b7317af964706964645ed249f63a2ecfa8f253047f8a4cc599e189a684"
     deepL_key = "e696d34b-262a-e2fe-9aa0-b1577eec98a7:fx"
     migration = Migration(from_key, to_key, deepL_key)
 

@@ -1,6 +1,6 @@
 import requests
 import jwt
-import json
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime as date
 
 # Admin API key goes here
@@ -22,25 +22,30 @@ payload = {
 # Create the token (including decoding secret)
 token = jwt.encode(payload, bytes.fromhex(secret), algorithm="HS256", headers=header)
 
-# Make an authenticated request to create a post
-
-delete_tag = "deoksugung"
-
-# filter: &filter=visibility:public
-
-url = f"https://gung.joseon.space/ghost/api/admin/posts/?filter=tag:{delete_tag}&limit=all"
+delete_tag = "deoksugung-event"
+base_url = "https://gung.joseon.space/ghost/api/admin/posts/"
 
 headers = {"Authorization": "Ghost {}".format(token)}
 
+def delete_post(post):
+    post_id = post['id']
+    delete_url = f'{base_url}{post_id}/'
+    for _ in range(5):  # Retry up to 5 times
+        try:
+            r = requests.delete(delete_url, headers=headers)
+            r.raise_for_status()  # Raise an exception for 4xx and 5xx errors
+            print(f"Data deleted: {post['title']} (ID: {post_id})")
+            break  # Success, exit retry loop
+        except requests.exceptions.RequestException as e:
+            print(f"Error deleting {post['title']} (ID: {post_id}): {e}")
+    else:
+        print(f"Max retries reached for {post['title']} (ID: {post_id})")
 
+# Fetch data from the API
+url = f"{base_url}?limit=all"
 r = requests.get(url, headers=headers)
 data = r.json()
 
-
-for post in data['posts']:
-    print(f"Deleting {post['title']}...")
-
-    post_id = post['id']
-    delete_url = f'https://gung.joseon.space/ghost/api/admin/posts/{post_id}/'
-    r = requests.delete(delete_url, headers=headers)
-    print(f"Data deleted: {post_id}")
+# Parallelize the delete requests
+with ThreadPoolExecutor(max_workers=5) as executor:
+    executor.map(delete_post, data['posts'])

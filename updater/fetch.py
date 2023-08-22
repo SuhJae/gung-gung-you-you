@@ -10,9 +10,9 @@ from post import GhostPost
 
 
 class FetchUntil:
-    def __init__(self, admin_api_key, driver=None):
+    def __init__(self, admin_api_key, en_admin_api_key, driver=None):
         self.admin_api_key = admin_api_key
-        self.ghost_post = GhostPost(admin_api_key)
+        self.ghost_post = GhostPost(admin_api_key, en_admin_api_key)
         if driver is None:
             options = Options()
             options.add_argument("--headless")
@@ -62,11 +62,11 @@ class FetchUntil:
                         link)
                 self.driver.back()
                 if post_to_ghost:
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["경복궁"],
+                    self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["경복궁"],
                                                            slug="GBG-" + str(article_id), string_time=date,
                                                            is_time_now=False, filename=filename, file_url=link,
                                                            file_size=size)
-                    print(f'Ghost response: {response.status_code}')
+
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -109,11 +109,11 @@ class FetchUntil:
                     size = 0
                 self.driver.back()
                 if post_to_ghost:
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["창덕궁"],
+                    self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["창덕궁"],
                                                            slug="GBG-" + str(article_id), string_time=date,
                                                            is_time_now=False, filename=filename, file_url=link,
                                                            file_size=size)
-                    print(f'Ghost response: {response.status_code}')
+
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -158,11 +158,11 @@ class FetchUntil:
                     size = s.split(" [")[1].split(" byte]")[0]
                 self.driver.back()
                 if post_to_ghost:
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["창경궁"],
+                    self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["창경궁"],
                                                            slug="CGG-" + str(article_id), string_time=date,
                                                            is_time_now=False, filename=filename, file_url=link,
                                                            file_size=size)
-                    print(f'Ghost response: {response.status_code}')
+
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -208,11 +208,10 @@ class FetchUntil:
                         link)
                 self.driver.back()
                 if post_to_ghost:
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                    self.ghost_post.create_post(button_url=url, content=content, title=title,
                                                            tags=["덕수궁", "덕수궁 공지"], slug="DSUN-" + str(article_id),
                                                            string_time=date, is_time_now=False, filename=filename,
                                                            file_url=link, file_size=size)
-                    print(f'Ghost response: {response.status_code}')
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -258,11 +257,11 @@ class FetchUntil:
                         link)
                 self.driver.back()
                 if post_to_ghost:
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                    self.ghost_post.create_post(button_url=url, content=content, title=title,
                                                            tags=["덕수궁", "덕수궁 채용"], slug="DSGJ-" + str(article_id),
                                                            string_time=date, is_time_now=False, filename=filename,
                                                            file_url=link, file_size=size)
-                    print(f'Ghost response: {response.status_code}')
+
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -309,11 +308,11 @@ class FetchUntil:
                         link)
                 self.driver.back()
                 if post_to_ghost:
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title,
+                    self.ghost_post.create_post(button_url=url, content=content, title=title,
                                                            tags=["덕수궁", "덕수궁 행사"], slug="DSGE-" + str(article_id),
                                                            string_time=date, is_time_now=False, filename=filename,
                                                            file_url=link, file_size=size)
-                    print(f'Ghost response: {response.status_code}')
+
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1
@@ -358,11 +357,11 @@ class FetchUntil:
                     size = s.split(" [")[1].split(" byte]")[0]
                 self.driver.back()
                 if post_to_ghost:
-                    response = self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["종묘"],
+                    self.ghost_post.create_post(button_url=url, content=content, title=title, tags=["종묘"],
                                                            slug="CGG-" + str(article_id), string_time=date,
                                                            is_time_now=False, filename=filename, file_url=link,
                                                            file_size=size)
-                    print(f'Ghost response: {response.status_code}')
+
 
             print(f"page: {page}, number of rows: {number_of_rows}")
             page += 1

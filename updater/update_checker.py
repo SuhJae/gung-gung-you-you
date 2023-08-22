@@ -6,8 +6,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from lastpost import SourceLastID, GhostLastId
 from datetime import datetime as date
 from fetch import FetchUntil
-import time
+from datetime import datetime
 import random
+import time
 
 # make it look like human
 user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
@@ -18,9 +19,10 @@ options.add_argument("--blink-settings=imagesEnabled=false")
 options.add_argument(f'user-agent={user_agent}')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-key = "64e46446ea9500431950ab72:890ce30138c23149213a235fe6c6fdbfad92c12ea54f33d30c8bd5c4756e0e34"
-ghost_last_id = GhostLastId(key)
-fetch_until = FetchUntil(key, driver)
+ko_key = "64e46446ea9500431950ab72:6a8326f4717aadf6ba86eddb55c37f6c01804afa5f63a560c557ae27b68ea98c"
+en_key = "64e481321ccb164eaf726ba1:00f732b7317af964706964645ed249f63a2ecfa8f253047f8a4cc599e189a684"
+ghost_last_id = GhostLastId(ko_key)
+fetch_until = FetchUntil(ko_key, en_key, driver)
 source_last_id = SourceLastID(driver)
 
 print('Setup Finished')
@@ -51,9 +53,6 @@ def sync(ghost, source, name):
     return True
 
 
-import time
-from datetime import datetime
-
 def check_update(max_retries = 5):
     print(f'[{datetime.now().strftime("%m/%d %H:%M:%S")}] Checking update')
     no_update = []
@@ -69,7 +68,7 @@ def check_update(max_retries = 5):
             except Exception as e:
                 print(f"An error occurred during sync for {name}: {e}.\nRetrying... ({retries + 1}/{max_retries})")
                 retries += 1
-                time.sleep(1)  # Wait for a moment before retrying
+                time.sleep(1)
         return False
 
     if not sync_with_retry(sync, ghost_last_id.gyeongbokgung, source_last_id.gyeongbokgung, '경복궁'):
