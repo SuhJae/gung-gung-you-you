@@ -4,7 +4,7 @@ import json
 from datetime import datetime as date
 
 # Admin API key goes here
-key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
+key = "64e46446ea9500431950ab72:890ce30138c23149213a235fe6c6fdbfad92c12ea54f33d30c8bd5c4756e0e34"
 
 # Split the key into ID and SECRET
 adminId, secret = key.split(":")
@@ -24,7 +24,7 @@ token = jwt.encode(payload, bytes.fromhex(secret), algorithm="HS256", headers=he
 
 # Make an authenticated request to create a post
 
-delete_tag = "deoksugung-event"
+delete_tag = "deoksugung"
 
 # filter: &filter=visibility:public
 

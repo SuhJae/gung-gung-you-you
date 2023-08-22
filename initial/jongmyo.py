@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-admin_api_key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
+admin_api_key = "64e46446ea9500431950ab72:890ce30138c23149213a235fe6c6fdbfad92c12ea54f33d30c8bd5c4756e0e34"
 ghost_post = GhostPost(admin_api_key)
 
 

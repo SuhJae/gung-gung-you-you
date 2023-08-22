@@ -259,7 +259,7 @@ class FetchUntil:
                 self.driver.back()
                 if post_to_ghost:
                     response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                           tags=["덕수궁", "덕수궁 채용"], slug="DSUN-" + str(article_id),
+                                                           tags=["덕수궁", "덕수궁 채용"], slug="DSGJ-" + str(article_id),
                                                            string_time=date, is_time_now=False, filename=filename,
                                                            file_url=link, file_size=size)
                     print(f'Ghost response: {response.status_code}')
@@ -310,7 +310,7 @@ class FetchUntil:
                 self.driver.back()
                 if post_to_ghost:
                     response = self.ghost_post.create_post(button_url=url, content=content, title=title,
-                                                           tags=["덕수궁", "덕수궁 행사"], slug="DSUN-" + str(article_id),
+                                                           tags=["덕수궁", "덕수궁 행사"], slug="DSGE-" + str(article_id),
                                                            string_time=date, is_time_now=False, filename=filename,
                                                            file_url=link, file_size=size)
                     print(f'Ghost response: {response.status_code}')

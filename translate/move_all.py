@@ -117,6 +117,10 @@ class Migration:
             print("Token expired. Generating new token...")
             self.to_token, self.to_token_exp = self.generate_to_token()
 
+        # check if post already exists (with slug)
+        url = f'{self.to_base_url}?filter=slug:{slug}'
+
+
         date_str = time
         content_lines = content.split('\n')
         paragraph_items = []
@@ -176,7 +180,7 @@ class Migration:
 
 
 if __name__ == "__main__":
-    from_key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
+    from_key = "64e46446ea9500431950ab72:890ce30138c23149213a235fe6c6fdbfad92c12ea54f33d30c8bd5c4756e0e34"
     to_key = "64e358948b573504974e8082:641e78ee77152562b89ac4910f1c0c3f4ab53276165863db004ba525eca0d5fc"
     deepL_key = "e696d34b-262a-e2fe-9aa0-b1577eec98a7:fx"
     migration = Migration(from_key, to_key, deepL_key)
