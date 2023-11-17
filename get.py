@@ -4,7 +4,7 @@ import requests
 from datetime import datetime as date
 
 # Admin API key goes here
-key = "64e046244c86ecf011c46ad4:a12be87aabbbf7a5b1def014d78688bc577930df0ed09547342de13396336e0c"
+key = "64e46446ea9500431950ab72:6a8326f4717aadf6ba86eddb55c37f6c01804afa5f63a560c557ae27b68ea98c"
 
 # Split the key into ID and SECRET
 adminId, secret = key.split(":")
@@ -19,7 +19,8 @@ payload = {
     "aud": "/admin/"
 }
 
-slug = input("Enter slug or press enter for recent post: ")
+# slug = input("Enter slug or press enter for recent post: ")
+slug = ""
 
 
 # Create the token (including decoding secret)
@@ -43,9 +44,13 @@ if response.status_code == 200:
     # Define the name of the JSON file where you want to save the data
     json_filename = "response_data.json"
 
-    # Save the data as a JSON file
+    # Save the mobile doc as a JSON file
     with open(json_filename, "w") as json_file:
-        json.dump(data, json_file, indent=4)
+        # turn the mobiledoc string into a dictionary
+        mobile_doc = json.loads(data["posts"][0]["mobiledoc"])
+        # save the mobiledoc dictionary as a JSON file which is easier to read
+        json.dump(mobile_doc, json_file, indent=4)
+
 
     print(f"Data saved as {json_filename}")
 else:

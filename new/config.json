@@ -1,0 +1,14 @@
+{
+  "config": {
+    "max_retries": 5,
+    "retry_delay": 3
+  },
+  "changdeokgung": {
+    "url": "https://www.cdg.go.kr/cms_for_cdg/process/board/list.jsp?nowPage=1&show_no=23&check_no=4&c_relation=48&c_relation2=110",
+    "xpath": {
+      "bord": "/html/body/div[1]/div[4]/b/div/div[2]/center/table/tbody/tr",
+      "article": "/html/body/div[1]/div[4]/b/div/div[2]/center/table/tbody/tr[4]/td"
+    }
+  }
+}
+

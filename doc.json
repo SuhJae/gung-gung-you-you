@@ -1,0 +1,277 @@
+{
+    "version": "0.3.2",
+    "markups": [
+        [
+            "b"
+        ],
+        [
+            "i"
+        ],
+        [
+            "code"
+        ],
+        [
+            "sub"
+        ],
+        [
+            "sup"
+        ],
+        [
+            "a",
+            [
+                "href",
+                "https://python.org"
+            ]
+        ]
+    ],
+    "atoms": [],
+    "cards": [
+        [
+            "hr",
+            {}
+        ],
+        [
+            "image",
+            {
+                "src": "https://placehold.co/600x400/EEE/31343C",
+                "caption": "You can add images!"
+            }
+        ],
+        [
+            "button",
+            {
+                "text": "You can also buttons!",
+                "url": "https://python.org",
+                "alignment": "center"
+            }
+        ],
+        [
+            "html",
+            {
+                "html": "<ul><li>You can also add HTML</li><li>Like this</li></ul>"
+            }
+        ],
+        [
+            "markdown",
+            {
+                "markdown": "You can add **raw markdown** cards! \n1. list item one\n2. list item two"
+            }
+        ],
+        [
+            "file",
+            {
+                "src": "https://placehold.co/600x400/EEE/31343C",
+                "fileName": "filename",
+                "fileTitle": "filetitle",
+                "fileCaption": "",
+                "fileSize": 1000
+            }
+        ],
+        [
+            "callout",
+            {
+                "calloutEmoji": "\ud83d\udd25",
+                "calloutText": "You can add callouts!",
+                "backgroundColor": "accent"
+            }
+        ]
+    ],
+    "sections": [
+        [
+            1,
+            "p",
+            [
+                [
+                    0,
+                    [],
+                    0,
+                    "This is a basic text, which is not formatted."
+                ]
+            ]
+        ],
+        [
+            1,
+            "p",
+            [
+                [
+                    0,
+                    [],
+                    0,
+                    "You may also add a list of strings."
+                ]
+            ]
+        ],
+        [
+            1,
+            "p",
+            [
+                [
+                    0,
+                    [],
+                    0,
+                    "To add multiple paragraphs."
+                ]
+            ]
+        ],
+        [
+            10,
+            0
+        ],
+        [
+            1,
+            "p",
+            [
+                [
+                    0,
+                    [],
+                    0,
+                    "Using "
+                ],
+                [
+                    0,
+                    [
+                        0
+                    ],
+                    1,
+                    "markdown-like"
+                ],
+                [
+                    0,
+                    [],
+                    0,
+                    " syntax, you can "
+                ],
+                [
+                    0,
+                    [
+                        1
+                    ],
+                    1,
+                    "format"
+                ],
+                [
+                    0,
+                    [],
+                    0,
+                    " the text."
+                ]
+            ]
+        ],
+        [
+            1,
+            "p",
+            [
+                [
+                    0,
+                    [],
+                    0,
+                    "You may also add a "
+                ],
+                [
+                    0,
+                    [
+                        2
+                    ],
+                    1,
+                    "list of strings"
+                ],
+                [
+                    0,
+                    [],
+                    0,
+                    "."
+                ]
+            ]
+        ],
+        [
+            1,
+            "p",
+            [
+                [
+                    0,
+                    [],
+                    0,
+                    "To "
+                ],
+                [
+                    0,
+                    [
+                        3
+                    ],
+                    1,
+                    "add"
+                ],
+                [
+                    0,
+                    [],
+                    0,
+                    " "
+                ],
+                [
+                    0,
+                    [
+                        4
+                    ],
+                    1,
+                    "multiple"
+                ],
+                [
+                    0,
+                    [],
+                    0,
+                    " paragraphs."
+                ]
+            ]
+        ],
+        [
+            1,
+            "p",
+            [
+                [
+                    0,
+                    [],
+                    0,
+                    "You can also add "
+                ],
+                [
+                    0,
+                    [
+                        5
+                    ],
+                    1,
+                    "hyperlinks"
+                ],
+                [
+                    0,
+                    [],
+                    0,
+                    "."
+                ]
+            ]
+        ],
+        [
+            10,
+            1
+        ],
+        [
+            10,
+            2
+        ],
+        [
+            10,
+            3
+        ],
+        [
+            10,
+            4
+        ],
+        [
+            10,
+            5
+        ],
+        [
+            10,
+            6
+        ]
+    ]
+}
